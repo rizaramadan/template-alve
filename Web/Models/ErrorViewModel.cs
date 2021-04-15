@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Alve.Models
+namespace Web.Models
 {
     public class ErrorViewModel
     {

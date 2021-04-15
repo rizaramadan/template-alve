@@ -1,4 +1,5 @@
-using Alve.Data;
+﻿using App.Services;
+using Infrastructures.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Alve
+namespace Web
 {
     public class Startup
     {
@@ -27,14 +28,21 @@ namespace Alve
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppDbContext>(options =>
+                options
+                    .UseNpgsql(
+                        Configuration.GetConnectionString("DefaultConnection"))
+                    .UseSnakeCaseNamingConvention()
+            );
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+            services.AddTransient<IDateTimeService, DateTimeService>();
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

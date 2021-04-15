@@ -1,4 +1,4 @@
-﻿using Alve.Models;
+﻿using Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Alve.Controllers
+namespace Web.Controllers
 {
     public class HomeController : Controller
     {

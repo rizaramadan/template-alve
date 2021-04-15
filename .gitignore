@@ -259,6 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-AlritioApp/wwwroot/_Uploads/*
-AlritioApp/wwwroot/templates/jobdeskTemplate.docx.copy.*
+Web/wwwroot/_Uploads/*
+Web/wwwroot/templates/jobdeskTemplate.docx.copy.*
 Docs/
