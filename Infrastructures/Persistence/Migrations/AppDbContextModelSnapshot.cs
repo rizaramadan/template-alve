@@ -28,7 +28,6 @@ namespace Infrastructures.Persistence.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
                         .HasColumnType("text")
                         .HasColumnName("concurrency_stamp");
 
@@ -49,13 +48,11 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("deleted_by");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("normalized_name");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -67,11 +64,7 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id")
-                        .HasName("pk_asp_net_roles");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                        .HasName("pk_app_roles");
 
                     b.ToTable("app_roles");
                 });
@@ -113,10 +106,7 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id")
-                        .HasName("pk_asp_net_role_claims");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_role_claims_role_id");
+                        .HasName("pk_app_role_claims");
 
                     b.ToTable("app_role_claims");
                 });
@@ -134,7 +124,6 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("access_failed_count");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
                         .HasColumnType("text")
                         .HasColumnName("concurrency_stamp");
 
@@ -155,8 +144,7 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("deleted_by");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("email");
 
                     b.Property<bool>("EmailConfirmed")
@@ -177,13 +165,11 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("normalized_email");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("normalized_user_name");
 
                     b.Property<string>("PasswordHash")
@@ -215,19 +201,11 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("updated_by");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("user_name");
 
                     b.HasKey("Id")
-                        .HasName("pk_asp_net_users");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                        .HasName("pk_app_users");
 
                     b.ToTable("app_users");
                 });
@@ -269,25 +247,18 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_asp_net_user_claims");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_claims_user_id");
+                        .HasName("pk_app_user_claims");
 
                     b.ToTable("app_user_claims");
                 });
 
             modelBuilder.Entity("Infrastructures.Persistence.AppUserLogin", b =>
                 {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("provider_key");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -297,9 +268,9 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("created_by");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text")
+                        .HasColumnName("login_provider");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -309,6 +280,10 @@ namespace Infrastructures.Persistence.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text")
                         .HasColumnName("provider_display_name");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text")
+                        .HasColumnName("provider_key");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -322,24 +297,19 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("user_id");
 
-                    b.HasKey("LoginProvider", "ProviderKey")
-                        .HasName("pk_asp_net_user_logins");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_logins_user_id");
+                    b.HasKey("Id")
+                        .HasName("pk_app_user_logins");
 
                     b.ToTable("app_user_logins");
                 });
 
             modelBuilder.Entity("Infrastructures.Persistence.AppUserRole", b =>
                 {
-                    b.Property<long>("UserId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("role_id");
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -357,14 +327,14 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("deleted_by");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("role_id");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -374,30 +344,23 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("updated_by");
 
-                    b.HasKey("UserId", "RoleId")
-                        .HasName("pk_asp_net_user_roles");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
 
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_user_roles_role_id");
+                    b.HasKey("Id")
+                        .HasName("pk_app_user_roles");
 
                     b.ToTable("app_user_roles");
                 });
 
             modelBuilder.Entity("Infrastructures.Persistence.AppUserToken", b =>
                 {
-                    b.Property<long>("UserId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("name");
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -407,9 +370,13 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("created_by");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text")
+                        .HasColumnName("login_provider");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone")
@@ -419,71 +386,18 @@ namespace Infrastructures.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("updated_by");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
                     b.Property<string>("Value")
                         .HasColumnType("text")
                         .HasColumnName("value");
 
-                    b.HasKey("UserId", "LoginProvider", "Name")
-                        .HasName("pk_asp_net_user_tokens");
+                    b.HasKey("Id")
+                        .HasName("pk_app_user_tokens");
 
                     b.ToTable("app_user_tokens");
-                });
-
-            modelBuilder.Entity("Infrastructures.Persistence.AppRoleClaim", b =>
-                {
-                    b.HasOne("Infrastructures.Persistence.AppRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Infrastructures.Persistence.AppUserClaim", b =>
-                {
-                    b.HasOne("Infrastructures.Persistence.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Infrastructures.Persistence.AppUserLogin", b =>
-                {
-                    b.HasOne("Infrastructures.Persistence.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Infrastructures.Persistence.AppUserRole", b =>
-                {
-                    b.HasOne("Infrastructures.Persistence.AppRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Infrastructures.Persistence.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Infrastructures.Persistence.AppUserToken", b =>
-                {
-                    b.HasOne("Infrastructures.Persistence.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

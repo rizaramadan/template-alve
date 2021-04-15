@@ -29,7 +29,7 @@ namespace Web.Areas.Identity.Pages.Account
 
         public bool RememberMe { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
         public class InputModel
         {

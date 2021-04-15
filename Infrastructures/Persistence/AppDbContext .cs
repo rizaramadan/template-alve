@@ -93,5 +93,10 @@ namespace Infrastructures.Persistence
                 }
             }
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<AppUser>()
+            //    .ToTable("app_users");
+        }
     }
 }

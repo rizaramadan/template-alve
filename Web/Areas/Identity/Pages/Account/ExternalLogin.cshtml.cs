@@ -42,10 +42,10 @@ namespace Web.Areas.Identity.Pages.Account
 
         public string ProviderDisplayName { get; set; } = string.Empty;
 
-        public string ReturnUrl { get; set; } = string.Empty;
+        public string? ReturnUrl { get; set; }
 
         [TempData]
-        public string ErrorMessage { get; set; } = string.Empty;
+        public string? ErrorMessage { get; set; }
 
         public class InputModel
         {

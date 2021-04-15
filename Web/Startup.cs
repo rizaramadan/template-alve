@@ -1,10 +1,10 @@
-﻿using App.Services;
-using Infrastructures.Persistence;
+﻿using Infrastructures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,20 +28,18 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-                options
-                    .UseNpgsql(
-                        Configuration.GetConnectionString("DefaultConnection"))
-                    .UseSnakeCaseNamingConvention()
-            );
+            services.AddInfrastructures(Configuration);
             services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
-            services.AddTransient<IDateTimeService, DateTimeService>();
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                //options.ViewLocationFormats.Clear();
+                options.ViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
+                options.ViewLocationFormats.Add($"/Domains/{{1}}/{{0}}{RazorViewEngine.ViewExtension}");
+                options.PageViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
+                options.AreaPageViewLocationFormats.Add($"/Domains/Shared/{{0}}{RazorViewEngine.ViewExtension}");
+            });
 
         }
 
@@ -59,7 +57,7 @@ namespace Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
